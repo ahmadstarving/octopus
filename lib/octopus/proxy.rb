@@ -73,6 +73,9 @@ module Octopus
       if !connection_pool.connected? && shards[Octopus.master_shard].connection.query_cache_enabled
         connection_pool.connection.enable_query_cache!
       end
+      ## always verify connection before returning connection to solve this issue :
+      ## https://github.com/thiagopradi/octopus/issues/457
+      connection_pool.connection.verify!
       connection_pool.connection
     end
 
